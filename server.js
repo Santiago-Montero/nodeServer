@@ -7,9 +7,7 @@ const express = require('express');
 
 const app = express()
 const PORT = 8080
-const server = app.listen( PORT, () =>{
-    console.log(`escuchando en el puerto ${PORT}`)
-})
+const server = app.listen(PORT)
 
 app.get('/productos', async (request, response) => {
     const productosArchivo = await productos.getAll();
