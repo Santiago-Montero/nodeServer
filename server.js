@@ -12,7 +12,7 @@ const server = app.listen(process.env.PORT || 8080);
 app.get('/productos', async (request, response) => {
     const productosArchivo = await productos.getAll();
     response.send(
-        productosArchivo
+        JSON.parse(productosArchivo)
     );
 })
 app.get('/productoRandom', async (request, response) => {

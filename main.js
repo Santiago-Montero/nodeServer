@@ -14,15 +14,11 @@ class Contenedor {
             return contenido;
 
         }catch(err){ // error en la lectura de archivo
-            try{
-                const contenido = await fs.promises.writeFile(this.nameFile, '');
-                return contenido;
-            }catch(err){
-                return err // error en la creacion de archivo
-            }
+            const contenido = await fs.promises.writeFile(this.nameFile, '');
+            return contenido;
         }
     }
-
+    
     async save(producto){
         try {
             const contenido =  await this.read(); // uso contenido para ver si esta vacio el archivo
