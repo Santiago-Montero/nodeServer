@@ -12,7 +12,6 @@ class Contenedor {
             const listaDeProductos = JSON.parse(contenido);
             this.file = listaDeProductos;
             return contenido;
-
         }catch(err){ // error en la lectura de archivo
             const contenido = await fs.promises.writeFile(this.nameFile, '');
             return contenido;
@@ -32,6 +31,7 @@ class Contenedor {
             }
             const productosString = JSON.stringify(this.file, null, 2);
             await fs.promises.writeFile(this.nameFile, productosString);
+            console.log(producto.id)
             return producto.id;
 
         } catch (error) {
@@ -40,9 +40,8 @@ class Contenedor {
     }
     async getById(idProducto){
         try{
-
-            const contenido = await this.read();
-            const item = contenido.find(producto => producto.id == idProducto);
+            await this.read();
+            const item = this.file.find(producto => producto.id == idProducto);
             if(item){
                 return item;
             }else{
@@ -62,6 +61,29 @@ class Contenedor {
             }
         }catch (error){
             return error ;
+        }
+    }
+
+    async updateItem(productoNuevo, idProducto) {
+        const { title, price, thumbnail } = productoNuevo;
+        try {
+            await this.read();
+            const contenidoActualizado = this.file.map(producto => {
+                if (producto.id == idProducto) {
+                    const productoActualizado = {
+                        ...producto,
+                        title : title,
+                        price : price,
+                        thumbnail : thumbnail 
+                    }
+                    return productoActualizado;
+                }
+                return producto;
+            });
+            const contenidoActualizadoString = JSON.stringify(contenidoActualizado, null, 2);
+            await fs.promises.writeFile(this.nameFile, contenidoActualizadoString);
+        } catch (error) {
+            return error;
         }
     }
     async deleteById(idProducto) {
